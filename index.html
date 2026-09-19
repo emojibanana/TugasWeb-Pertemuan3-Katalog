@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Katalog Buku</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .book-card-shimer {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .book-card-shimer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0.4) 50%, transparent 75%);
+            transition: left 0.6s ease;
+            z-index: 10;
+        }
+
+        .book-card-shimer:hover::before {
+            left: 100%;
+        }
+
+        .book-card-shimer img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .book-card-shimer:hover {
+            box-shadow: 0 10px 15px -3px rgba(147, 197, 253, 0.5), 0 4px 6px -2px rgba(147, 197, 253, 0.3);
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-10xl mx-auto px-4 py-4 flex justify-between items-center sm:px-6 lg:px-8">
+          <h1 class="text-2xl sm:text-xl font-bold text-blue-600">Katalog Buku</h1>
+          <div class="flex gap-4 sm:gap-6">
+                <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Beranda</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Kategori</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Kontak</a>
+            </div>
+        </div>
+    </nav>
+    
+    <header class="bg-blue-600 text-white py-12 text-center">
+        <h2 class="text-xl md:text-2xl lg:text-3xl font-extrabold mb-2">Selamat Welcome di Katalog Buku</h2>
+        <p class="text-lg md:text-xl lg:text-2xl">Cari Buku Paling Mantap? Ya disini lah!.</p>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-6 mt-2">
+            <h3 class="text-xl font-semibold">Buku Terbaru</h3>
+           <select class="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="all">Semua Kategori</option>
+                <option value="novel">Favorit</option>
+                <option value="komik">Novel</option>
+                <option value="biografi">Ilmu</option>
+            </select>
+        </div>
+    
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="book-card-shimer bg-white shadow-sm border border-gray-200 flex flex-col h-full">
+                <img src="https://imgs.search.brave.com/xZY-y5u9o5g1JR6yW4d6cYaU77d1fXptRTG1D3x0DCg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zYW5h/ZG1lZGlhLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMjAyNS8w/Ny9XaGF0c0FwcC1J/bWFnZS0yMDI1LTA3/LTIxLWF0LTEwLjQ0/LjMxLmpwZWc" alt="Buku 1" class="w-full h-48 object-cover">
+                <div class="p-4 relative z-20 flex flex-col flex-grow">
+                    <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Favorit</span>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">Islam ala Wowo</h4>
+                    <p class="text-gray-600 text-sm mt-1">Oleh WOWO</p>
+                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
+                        <span class="text-lg font-bold text-gray-900">Rp 1.000.000</span>
+                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy</Details></button>
+                    </div>
+                </div>
+            </div>
+            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
+                <img src="https://imgs.search.brave.com/N0a2i6KTHT94Eo3E76ciDGdLDhT6z8nseBPMIzEkynQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/YnVrdWtpdGEuY29t/L2JhYmFjbXMvZGlz/cGxheWJ1a3UvMzgx/OTEuanBn" alt="Buku 2" class="w-full h-48 object-cover">
+                <div class="p-4 relative z-20 flex flex-col flex-grow">
+                    <span class="text-xs font-semibold text-purple-500 uppercase tracking-wider">Horror</span>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">Linux Untuk Pemula</h4>
+                    <p class="text-gray-600 text-sm mt-1">Oleh PENGGUNA LINUX AKUT</p>
+                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
+                        <span class="text-lg font-bold text-gray-900">Rp 50.000</span>
+                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy </Details></button>
+                    </div>
+                </div>
+            </div>
+            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
+                <img src="https://imgs.search.brave.com/mYd5rVERGCLX8O4sU2u6SdrjVxnHTnlfvVA-dUSdM9I/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9idWt1/a2l0YS5jb20vYmFi/YWNtcy9kaXNwbGF5/YnVrdS84MjQ0OF9m/LmpwZw" alt="Buku 3" class="w-full h-48 object-cover">
+                <div class="p-4 relative z-20 flex flex-col flex-grow">
+                    <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Ilmu</span>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">Bocoran Pertanyaan Alam Kubur Plus Kunci Jawaban</h4>
+                    <p class="text-gray-600 text-sm mt-1">Oleh M.SYAFI'I MASYKUR</p>
+                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
+                        <span class="text-lg font-bold text-gray-900">Rp 50.000</span>
+                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy </Details></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
+                <img src="https://imgs.search.brave.com/j5DJx2-0VLPxvsS4oa5ytCFhPVhCqd4ka3GuRbkWlHQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMtbmEuc3NsLWlt/YWdlcy1hbWF6b24u/Y29tL2ltYWdlcy9J/LzYxQk4rcFhlRDNM/LmpwZw" alt="Buku 4" class="w-full h-48 object-cover">
+                <div class="p-4 relative z-20 flex flex-col flex-grow">
+                    <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Novel</span>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">The Meow A Novel</h4>
+                    <p class="text-gray-600 text-sm mt-1">Oleh SI CUKING</p>
+                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
+                        <span class="text-lg font-bold text-gray-900">Rp 50.000</span>
+                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy </Details></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
+                <img src="https://imgs.search.brave.com/DsiAO20DWeVFdPYySFjOhJ7hPYCnOMX7QYeT8g6XbRk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wcmV2/aWV3LnJlZGQuaXQv/YnVrdS1wZXJzaWFw/YW4tbWFzdWstdGst/ZmF2b3JpdC12MC15/ZXRsNms5M3QxY2Ix/LmpwZz93aWR0aD02/NDAmY3JvcD1zbWFy/dCZhdXRvPXdlYnAm/cz01NzE0ZWUzYzUz/OWE1Mjg0NTdmMmYz/NTQ4YjY0YTM3OTFh/NzIyNjIy" alt="Buku 1" class="w-full h-48 object-cover">
+                <div class="p-4 relative z-20 flex flex-col flex-grow">
+                    <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Ilmu</span>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">99,9% Diterima Masuk TK Favorit</h4>
+                    <p class="text-gray-600 text-sm mt-1">Oleh WAWAN GURITNO</p>
+                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
+                        <span class="text-lg font-bold text-gray-900">Rp 100.000</span>
+                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy</Details></button>
+                    </div>
+                </div>
+            </div>
+            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
+                <img src="https://bukukita.com/babacms/displaybuku/56748_f.jpg" alt="Buku 2" class="w-full h-48 object-cover">
+                <div class="p-4 relative z-20 flex flex-col flex-grow">
+                    <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Novel</span>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">Linux Untuk Pemula</h4>
+                    <p class="text-gray-600 text-sm mt-1">Oleh GATOTKOCO SUROSO</p>
+                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
+                        <span class="text-lg font-bold text-gray-900">Rp 1.000.000</span>
+                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy </Details></button>
+                    </div>
+                </div>
+            </div>
+            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
+                <img src="https://perpustakaan.jakarta.go.id/catalog-dispusip/uploaded_files/sampul_koleksi/original/Monograf/211116.jpg" alt="Buku 3" class="w-full h-48 object-cover">
+                <div class="p-4 relative z-20 flex flex-col flex-grow">
+                    <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Favorit</span>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">Ahmad Sahroni meraih mimpi</h4>
+                    <p class="text-gray-600 text-sm mt-1">Oleh FENTY EFFENDY</p>
+                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
+                        <span class="text-lg font-bold text-gray-900">Rp 1.000.000</span>
+                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy </Details></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
+                <img src="https://imgs.search.brave.com/9-7CniKEPELqr9JledmwQYkltEitOGJAuz9kgfvQ9Yg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NDFxaGFoVFp5WEwu/anBn" alt="Buku 4" class="w-full h-48 object-cover">
+                <div class="p-4 relative z-20 flex flex-col flex-grow">
+                    <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Novel</span>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">The Purr A Novel</h4>
+                    <p class="text-gray-600 text-sm mt-1">Oleh JUST PURR</p>
+                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
+                        <span class="text-lg font-bold text-gray-900">Rp 50.000</span>
+                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy </Details></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+          
+</html>
