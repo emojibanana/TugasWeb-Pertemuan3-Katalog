@@ -1,6 +1,6 @@
 # TugasWeb Pertemuan 3 - Katalog
 
-Katalog buku sederhana berbasis HTML dan Tailwind CDN.
+Aplikasi katalog buku interaktif dengan grid layout responsif, filter kategori, kartu produk dengan shimmer effect, dan integrasi Tailwind CSS via CDN.
 
 ## Status
 
@@ -12,7 +12,8 @@ Buka `index.html` langsung di browser. Tidak diperlukan proses build.
 
 ## Isi Project
 
-- `index.html` — halaman katalog buku
+- `index.html` — halaman katalog buku dengan navigasi, header, grid buku, dan filter kategori
+- **Fitur:** navigation bar sticky, book card dengan shimmer effect on hover, responsive grid (2-4 kolom), dropdown filter kategori, detail button per buku
 
 ## Catatan
 
