@@ -1,39 +1,19 @@
-# TugasWeb-Pertemuan3-Katalog
+# TugasWeb Pertemuan 3 - Katalog
 
-[![BETA](https://img.shields.io/badge/status-BETA-yellow)](https://github.com/emojibanana/TugasWeb-Pertemuan3-Katalog)
+Katalog buku sederhana berbasis HTML dan Tailwind CDN.
 
-Ini adalah Katalog yang berisi buku-buku #khusus# berbasis HTML dan CSS (Tailwind via CDN). Isi situsnya cuma daftar buku dengan harga yang dibuat-buat.
+## Status
 
-## Apa Isi nya?
+**BETA** — project masih dalam tahap pengembangan dan dapat mengalami perubahan atau memiliki bug.
 
-- satu halaman biodata sederhana
-- Navigation pakai anchors
-- Tombol Sosial media (Instagram, Facebook, Twitter, LinkedIn, YouTube, TikTok) (BELUM ADA ISINYA!)
-- Form kontak placeholder
-- Tailwind CSS (via CDN)
-- Bootstrap CSS (local files included)
+## Menjalankan
 
-## Kekurangan/Lagi Dikerjain
+Buka `index.html` langsung di browser. Tidak diperlukan proses build.
 
-- Layout mungkin tidak sepenuhnya responsif pada perangkat mobile
-- Elemen formulir hanya placeholder (tanpa backend)
-- Validasi input hilang
-- Penyempurnaan gaya diperlukan untuk visual yang lebih mantap
+## Isi Project
 
-## Rencananya
+- `index.html` — halaman katalog buku
 
-- Desain visual yang modern dan bersih
-- Peningkatan responsif untuk mobile
-- Fungsionalitas formulir (sisi server atau pihak ketiga)
-- Peningkatan aksesibilitas
-- Optimasi kinerja
+## Catatan
 
-## Author
-
-Ahmad Al Banna
-- Email: ahmadbanna1709@gmail.com
-- Link sosial media ada di situsnya (Belom)
-
----
-
-*Repo ini cuma untuk Tugas Kuliah! Tapi mungkin bisa dikembangkan lagi.*
+Project ini dibuat untuk tugas web Pertemuan 3.
