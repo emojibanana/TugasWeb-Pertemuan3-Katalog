@@ -1,39 +1,20 @@
-# TugasWeb-Pertemuan1-2-Biodata
+# TugasWeb Pertemuan 3 - Katalog
 
-[![BETA](https://img.shields.io/badge/status-BETA-yellow)](https://github.com/emojibanana/TugasWeb-Pertemuan1-2-Biodata)
+Aplikasi katalog buku interaktif dengan grid layout responsif, filter kategori, kartu produk dengan shimmer effect, dan integrasi Tailwind CSS via CDN.
 
-Ini adalah Data Personal versi BETA punya saya berbasis HTML dan CSS (Tailwind CSS via CDN). Situs ini berisi informasi personal, jenjang pendidikan, and link sosial media saya.
+## Status
 
-## Apa Isi nya?
+**BETA** — project masih dalam tahap pengembangan dan dapat mengalami perubahan atau memiliki bug.
 
-- satu halaman biodata sederhana
-- Navigation pakai anchors
-- Tombol Sosial media (Instagram, Facebook, Twitter, LinkedIn, YouTube, TikTok) (BELUM ADA ISINYA!)
-- Form kontak placeholder
-- Tailwind CSS (via CDN)
-- Bootstrap CSS (local files included)
+## Menjalankan
 
-## Kekurangan/Lagi Dikerjain
+Buka `index.html` langsung di browser. Tidak diperlukan proses build.
 
-- Layout mungkin tidak sepenuhnya responsif pada perangkat mobile
-- Elemen formulir hanya placeholder (tanpa backend)
-- Validasi input hilang
-- Penyempurnaan gaya diperlukan untuk visual yang lebih mantap
+## Isi Project
 
-## Rencananya
+- `index.html` — halaman katalog buku dengan navigasi, header, grid buku, dan filter kategori
+- **Fitur:** navigation bar sticky, book card dengan shimmer effect on hover, responsive grid (2-4 kolom), dropdown filter kategori, detail button per buku
 
-- Desain visual yang modern dan bersih
-- Peningkatan responsif untuk mobile
-- Fungsionalitas formulir (sisi server atau pihak ketiga)
-- Peningkatan aksesibilitas
-- Optimasi kinerja
+## Catatan
 
-## Author
-
-Ahmad Al Banna
-- Email: ahmadbanna1709@gmail.com
-- Link sosial media ada di situsnya (Belom)
-
----
-
-*Repo ini cuma untuk Tugas Kuliah! Tapi mungkin bisa dikembangkan lagi.*
+Project ini dibuat untuk tugas web Pertemuan 3.
