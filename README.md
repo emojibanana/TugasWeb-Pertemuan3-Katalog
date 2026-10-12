@@ -1,6 +1,6 @@
 # TugasWeb-Pertemuan3-Katalog
 
-[![BETA](https://img.shields.io/badge/status-BETA-yellow)](https://github.com/emojibanana/TugasWeb-Pertemuan3-Katalog)
+[![SELESAI](https://img.shields.io/badge/status-SELESAI-green)](https://github.com/emojibanana/TugasWeb-Pertemuan3-Katalog)
 
 Ini adalah Katalog buku buku khusus yang saya masukkan berbasis HTML dan CSS (Tailwind via CDN). Situs ini berisi beberapa cover buku dengan harga yang dibuat-buat.
 
@@ -12,10 +12,6 @@ Ini adalah Katalog buku buku khusus yang saya masukkan berbasis HTML dan CSS (Ta
 - Tombol detail buku
 - Tombol Beli via WhatsApp
 - Tailwind CSS (via CDN)
-
-## Status Pengerjaan
-
-- Semua kekurangan di daftar tugas sudah dikerjakan, tanpa JavaScript.
 
 ## Author
 
