@@ -1,175 +1,260 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Katalog Buku — daftar buku pilihan beserta harga. Dibuat murni dengan HTML dan Tailwind CSS, tanpa JavaScript."/>
     <title>Katalog Buku</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        html { scroll-behavior: smooth; }
+
         .book-card-shimer {
             position: relative;
             overflow: hidden;
             border-radius: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .book-card-shimer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(120deg, rgba(255, 255, 255, 0.4) 50%, transparent 75%);
-            transition: left 0.6s ease;
-            z-index: 10;
-        }
-
-        .book-card-shimer:hover::before {
-            left: 100%;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
         .book-card-shimer img {
             display: block;
             width: 100%;
-            height: auto;
+            height: 18rem;
+            object-fit: cover;
+            transition: transform 0.4s ease;
         }
 
         .book-card-shimer:hover {
-            box-shadow: 0 10px 15px -3px rgba(147, 197, 253, 0.5), 0 4px 6px -2px rgba(147, 197, 253, 0.3);
-            transform: translateY(-3px);
+            box-shadow: 0 8px 16px -6px rgba(37, 99, 235, 0.25), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .book-card-shimer:hover img {
+            transform: scale(1.04);
+        }
+
+        /* Pil kategori: status aktif tanpa JavaScript */
+        #kategori label:has(input:checked) {
+            background-color: #2563eb;
+            border-color: #2563eb;
+            color: #fff;
+        }
+        #kategori label:has(input:focus-visible) {
+            outline: 2px solid #2563eb;
+            outline-offset: 2px;
+        }
+
+        /* Filter kategori murni CSS: hanya kartu yang cocok yang tampil */
+        #kategori:has(#kat-favorit:checked) ~ #buku .book-card-shimer:not([data-kategori="favorit"]),
+        #kategori:has(#kat-novel:checked) ~ #buku .book-card-shimer:not([data-kategori="novel"]),
+        #kategori:has(#kat-ilmu:checked) ~ #buku .book-card-shimer:not([data-kategori="ilmu"]),
+        #kategori:has(#kat-horror:checked) ~ #buku .book-card-shimer:not([data-kategori="horror"]) {
+            display: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .book-card-shimer, .book-card-shimer img { transition: none; }
+            .book-card-shimer:hover { transform: none; }
+            .book-card-shimer:hover img { transform: none; }
         }
     </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
 
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-10xl mx-auto px-4 py-4 flex justify-between items-center sm:px-6 lg:px-8">
+    <nav class="bg-white shadow-md sticky top-0 z-50" aria-label="Navigasi utama">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center sm:px-6 lg:px-8">
           <h1 class="text-2xl sm:text-xl font-bold text-blue-600">Katalog Buku</h1>
           <div class="flex gap-4 sm:gap-6">
-                <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Beranda</a>
-                <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Kategori</a>
-                <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Kontak</a>
+                <a href="#beranda" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Beranda</a>
+                <a href="#buku" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Buku</a>
             </div>
         </div>
     </nav>
     
-    <header class="bg-blue-600 text-white py-12 text-center">
+    <header id="beranda" class="bg-blue-600 text-white py-12 text-center scroll-mt-20">
         <h2 class="text-xl md:text-2xl lg:text-3xl font-extrabold mb-2">Selamat Welcome di Katalog Buku</h2>
         <p class="text-lg md:text-xl lg:text-2xl">Cari Buku Paling Mantap? Ya disini lah!.</p>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-8">
-        <div class="flex justify-between items-center mb-6 mt-2">
-            <h3 class="text-xl font-semibold">Buku Terbaru</h3>
-           <select class="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="all">Semua Kategori</option>
-                <option value="novel">Favorit</option>
-                <option value="komik">Novel</option>
-                <option value="biografi">Ilmu</option>
-            </select>
+        <div id="kategori" class="mb-6 mt-2 scroll-mt-24">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                <h3 class="text-xl font-semibold">Buku Terbaru</h3>
+                <div class="flex flex-wrap gap-2" role="radiogroup" aria-label="Filter kategori buku">
+                    <label class="text-xs font-semibold border border-gray-300 rounded-full px-3 py-1 cursor-pointer hover:border-blue-500 hover:text-blue-600 transition-colors duration-200">
+                        <input type="radio" name="kategori" id="kat-semua" checked class="sr-only"/>
+                        <span>Semua</span>
+                    </label>
+                    <label class="text-xs font-semibold border border-gray-300 rounded-full px-3 py-1 cursor-pointer hover:border-blue-500 hover:text-blue-600 transition-colors duration-200">
+                        <input type="radio" name="kategori" id="kat-favorit" class="sr-only"/>
+                        <span>Favorit</span>
+                    </label>
+                    <label class="text-xs font-semibold border border-gray-300 rounded-full px-3 py-1 cursor-pointer hover:border-blue-500 hover:text-blue-600 transition-colors duration-200">
+                        <input type="radio" name="kategori" id="kat-novel" class="sr-only"/>
+                        <span>Novel</span>
+                    </label>
+                    <label class="text-xs font-semibold border border-gray-300 rounded-full px-3 py-1 cursor-pointer hover:border-blue-500 hover:text-blue-600 transition-colors duration-200">
+                        <input type="radio" name="kategori" id="kat-ilmu" class="sr-only"/>
+                        <span>Ilmu</span>
+                    </label>
+                    <label class="text-xs font-semibold border border-gray-300 rounded-full px-3 py-1 cursor-pointer hover:border-blue-500 hover:text-blue-600 transition-colors duration-200">
+                        <input type="radio" name="kategori" id="kat-horror" class="sr-only"/>
+                        <span>Horror</span>
+                    </label>
+                </div>
+            </div>
         </div>
     
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <div class="book-card-shimer bg-white shadow-sm border border-gray-200 flex flex-col h-full">
-                <img src="https://imgs.search.brave.com/xZY-y5u9o5g1JR6yW4d6cYaU77d1fXptRTG1D3x0DCg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zYW5h/ZG1lZGlhLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMjAyNS8w/Ny9XaGF0c0FwcC1J/bWFnZS0yMDI1LTA3/LTIxLWF0LTEwLjQ0/LjMxLmpwZWc" alt="Buku 1" class="w-full h-48 object-cover">
+        <div id="buku" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 scroll-mt-24">
+            <div id="buku-1" data-kategori="favorit" class="book-card-shimer bg-white shadow-sm border border-gray-200 flex flex-col h-full scroll-mt-24">
+                <img src="https://imgs.search.brave.com/xZY-y5u9o5g1JR6yW4d6cYaU77d1fXptRTG1D3x0DCg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zYW5h/ZG1lZGlhLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMjAyNS8w/Ny9XaGF0c0FwcC1J/bWFnZS0yMDI1LTA3/LTIxLWF0LTEwLjQ0/LjMxLmpwZWc" alt="Sampul buku Islam ala Wowo oleh WOWO" loading="lazy" decoding="async" class="w-full h-72 object-cover">
                 <div class="p-4 relative z-20 flex flex-col flex-grow">
                     <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Favorit</span>
-                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">Islam ala Wowo</h4>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight min-h-[4.25rem] line-clamp-3">Islam ala Wowo</h4>
                     <p class="text-gray-600 text-sm mt-1">Oleh WOWO</p>
-                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
-                        <span class="text-lg font-bold text-gray-900">Rp 1.000.000</span>
-                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy</Details></button>
+                    <div class="mt-auto pt-4 border-t border-gray-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-2">
+                            <span class="text-lg font-bold text-gray-900">Rp 1.000.000</span>
+                            <a href="https://wa.me/1234567890?text=Halo%2C%20saya%20mau%20beli%20buku%20Islam%20ala%20Wowo%20(Rp%201.000.000).%20Apakah%20masih%20tersedia%3F" target="_blank" rel="noopener" class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 text-center">Beli</a>
+                        </div>
+                        <details class="mt-3 text-sm">
+                            <summary class="cursor-pointer font-semibold text-blue-600 hover:text-blue-700">Detail buku</summary>
+                            <p class="text-gray-600 mt-1">Oleh WOWO • Kategori: Favorit. Edisi kolektor yang langka dan banyak diburu. Stok terbatas, siapa cepat dia dapat.</p>
+                        </details>
                     </div>
                 </div>
             </div>
-            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
-                <img src="https://imgs.search.brave.com/N0a2i6KTHT94Eo3E76ciDGdLDhT6z8nseBPMIzEkynQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/YnVrdWtpdGEuY29t/L2JhYmFjbXMvZGlz/cGxheWJ1a3UvMzgx/OTEuanBn" alt="Buku 2" class="w-full h-48 object-cover">
+            <div id="buku-2" data-kategori="horror" class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full scroll-mt-24">
+                <img src="https://imgs.search.brave.com/N0a2i6KTHT94Eo3E76ciDGdLDhT6z8nseBPMIzEkynQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/YnVrdWtpdGEuY29t/L2JhYmFjbXMvZGlz/cGxheWJ1a3UvMzgx/OTEuanBn" alt="Sampul buku Linux Untuk Pemula oleh Pengguna Linux Akut" loading="lazy" decoding="async" class="w-full h-72 object-cover">
                 <div class="p-4 relative z-20 flex flex-col flex-grow">
                     <span class="text-xs font-semibold text-purple-500 uppercase tracking-wider">Horror</span>
-                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">Linux Untuk Pemula</h4>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight min-h-[4.25rem] line-clamp-3">Linux Untuk Pemula</h4>
                     <p class="text-gray-600 text-sm mt-1">Oleh PENGGUNA LINUX AKUT</p>
-                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
-                        <span class="text-lg font-bold text-gray-900">Rp 50.000</span>
-                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy </Details></button>
+                    <div class="mt-auto pt-4 border-t border-gray-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-2">
+                            <span class="text-lg font-bold text-gray-900">Rp 50.000</span>
+                            <a href="https://wa.me/1234567890?text=Halo%2C%20saya%20mau%20beli%20buku%20Linux%20Untuk%20Pemula%20(Rp%2050.000).%20Apakah%20masih%20tersedia%3F" target="_blank" rel="noopener" class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 text-center">Beli</a>
+                        </div>
+                        <details class="mt-3 text-sm">
+                            <summary class="cursor-pointer font-semibold text-blue-600 hover:text-blue-700">Detail buku</summary>
+                            <p class="text-gray-600 mt-1">Oleh PENGGUNA LINUX AKUT • Kategori: Horror. Panduan santai buat yang baru mulai pakai Linux: instalasi, perintah dasar, sampai tips anti panik.</p>
+                        </details>
                     </div>
                 </div>
             </div>
-            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
-                <img src="https://imgs.search.brave.com/mYd5rVERGCLX8O4sU2u6SdrjVxnHTnlfvVA-dUSdM9I/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9idWt1/a2l0YS5jb20vYmFi/YWNtcy9kaXNwbGF5/YnVrdS84MjQ0OF9m/LmpwZw" alt="Buku 3" class="w-full h-48 object-cover">
+            <div id="buku-3" data-kategori="ilmu" class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full scroll-mt-24">
+                <img src="https://imgs.search.brave.com/mYd5rVERGCLX8O4sU2u6SdrjVxnHTnlfvVA-dUSdM9I/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9idWt1/a2l0YS5jb20vYmFi/YWNtcy9kaXNwbGF5/YnVrdS84MjQ0OF9m/LmpwZw" alt="Sampul buku Bocoran Pertanyaan Alam Kubur Plus Kunci Jawaban oleh M. Syafi'i Masykur" loading="lazy" decoding="async" class="w-full h-72 object-cover">
                 <div class="p-4 relative z-20 flex flex-col flex-grow">
                     <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Ilmu</span>
-                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">Bocoran Pertanyaan Alam Kubur Plus Kunci Jawaban</h4>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight min-h-[4.25rem] line-clamp-3">Bocoran Pertanyaan Alam Kubur Plus Kunci Jawaban</h4>
                     <p class="text-gray-600 text-sm mt-1">Oleh M.SYAFI'I MASYKUR</p>
-                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
-                        <span class="text-lg font-bold text-gray-900">Rp 50.000</span>
-                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy </Details></button>
+                    <div class="mt-auto pt-4 border-t border-gray-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-2">
+                            <span class="text-lg font-bold text-gray-900">Rp 50.000</span>
+                            <a href="https://wa.me/1234567890?text=Halo%2C%20saya%20mau%20beli%20buku%20Bocoran%20Pertanyaan%20Alam%20Kubur%20Plus%20Kunci%20Jawaban%20(Rp%2050.000).%20Apakah%20masih%20tersedia%3F" target="_blank" rel="noopener" class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 text-center">Beli</a>
+                        </div>
+                        <details class="mt-3 text-sm">
+                            <summary class="cursor-pointer font-semibold text-blue-600 hover:text-blue-700">Detail buku</summary>
+                            <p class="text-gray-600 mt-1">Oleh M.SYAFI'I MASYKUR • Kategori: Ilmu. Buku ilmu populer dengan gaya ringan dan mudah dipahami, cocok untuk bacaan sehari-hari.</p>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
-                <img src="https://imgs.search.brave.com/j5DJx2-0VLPxvsS4oa5ytCFhPVhCqd4ka3GuRbkWlHQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMtbmEuc3NsLWlt/YWdlcy1hbWF6b24u/Y29tL2ltYWdlcy9J/LzYxQk4rcFhlRDNM/LmpwZw" alt="Buku 4" class="w-full h-48 object-cover">
+            <div id="buku-4" data-kategori="novel" class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full scroll-mt-24">
+                <img src="https://imgs.search.brave.com/j5DJx2-0VLPxvsS4oa5ytCFhPVhCqd4ka3GuRbkWlHQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMtbmEuc3NsLWlt/YWdlcy1hbWF6b24u/Y29tL2ltYWdlcy9J/LzYxQk4rcFhlRDNM/LmpwZw" alt="Sampul buku The Meow A Novel oleh Si Cuking" loading="lazy" decoding="async" class="w-full h-72 object-cover">
                 <div class="p-4 relative z-20 flex flex-col flex-grow">
                     <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Novel</span>
-                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">The Meow A Novel</h4>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight min-h-[4.25rem] line-clamp-3">The Meow A Novel</h4>
                     <p class="text-gray-600 text-sm mt-1">Oleh SI CUKING</p>
-                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
-                        <span class="text-lg font-bold text-gray-900">Rp 50.000</span>
-                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy </Details></button>
+                    <div class="mt-auto pt-4 border-t border-gray-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-2">
+                            <span class="text-lg font-bold text-gray-900">Rp 50.000</span>
+                            <a href="https://wa.me/1234567890?text=Halo%2C%20saya%20mau%20beli%20buku%20The%20Meow%20A%20Novel%20(Rp%2050.000).%20Apakah%20masih%20tersedia%3F" target="_blank" rel="noopener" class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 text-center">Beli</a>
+                        </div>
+                        <details class="mt-3 text-sm">
+                            <summary class="cursor-pointer font-semibold text-blue-600 hover:text-blue-700">Detail buku</summary>
+                            <p class="text-gray-600 mt-1">Oleh SI CUKING • Kategori: Novel. Novel ringan tentang persahabatan dan kucing yang menggemaskan. Bacaan santai pelepas penat.</p>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
-                <img src="https://imgs.search.brave.com/DsiAO20DWeVFdPYySFjOhJ7hPYCnOMX7QYeT8g6XbRk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wcmV2/aWV3LnJlZGQuaXQv/YnVrdS1wZXJzaWFw/YW4tbWFzdWstdGst/ZmF2b3JpdC12MC15/ZXRsNms5M3QxY2Ix/LmpwZz93aWR0aD02/NDAmY3JvcD1zbWFy/dCZhdXRvPXdlYnAm/cz01NzE0ZWUzYzUz/OWE1Mjg0NTdmMmYz/NTQ4YjY0YTM3OTFh/NzIyNjIy" alt="Buku 1" class="w-full h-48 object-cover">
+            <div id="buku-5" data-kategori="ilmu" class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full scroll-mt-24">
+                <img src="https://imgs.search.brave.com/DsiAO20DWeVFdPYySFjOhJ7hPYCnOMX7QYeT8g6XbRk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wcmV2/aWV3LnJlZGQuaXQv/YnVrdS1wZXJzaWFw/YW4tbWFzdWstdGst/ZmF2b3JpdC12MC15/ZXRsNms5M3QxY2Ix/LmpwZz93aWR0aD02/NDAmY3JvcD1zbWFy/dCZhdXRvPXdlYnAm/cz01NzE0ZWUzYzUz/OWE1Mjg0NTdmMmYz/NTQ4YjY0YTM3OTFh/NzIyNjIy" alt="Sampul buku 99,9% Diterima Masuk TK Favorit oleh Wawan Guritno" loading="lazy" decoding="async" class="w-full h-72 object-cover">
                 <div class="p-4 relative z-20 flex flex-col flex-grow">
                     <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Ilmu</span>
-                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">99,9% Diterima Masuk TK Favorit</h4>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight min-h-[4.25rem] line-clamp-3">99,9% Diterima Masuk TK Favorit</h4>
                     <p class="text-gray-600 text-sm mt-1">Oleh WAWAN GURITNO</p>
-                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
-                        <span class="text-lg font-bold text-gray-900">Rp 100.000</span>
-                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy</Details></button>
+                    <div class="mt-auto pt-4 border-t border-gray-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-2">
+                            <span class="text-lg font-bold text-gray-900">Rp 100.000</span>
+                            <a href="https://wa.me/1234567890?text=Halo%2C%20saya%20mau%20beli%20buku%2099%2C9%25%20Diterima%20Masuk%20TK%20Favorit%20(Rp%20100.000).%20Apakah%20masih%20tersedia%3F" target="_blank" rel="noopener" class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 text-center">Beli</a>
+                        </div>
+                        <details class="mt-3 text-sm">
+                            <summary class="cursor-pointer font-semibold text-blue-600 hover:text-blue-700">Detail buku</summary>
+                            <p class="text-gray-600 mt-1">Oleh WAWAN GURITNO • Kategori: Ilmu. Panduan persiapan masuk TK favorit: tips, latihan soal, dan strategi percaya diri untuk orang tua dan anak.</p>
+                        </details>
                     </div>
                 </div>
             </div>
-            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
-                <img src="https://bukukita.com/babacms/displaybuku/56748_f.jpg" alt="Buku 2" class="w-full h-48 object-cover">
+            <div id="buku-6" data-kategori="novel" class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full scroll-mt-24">
+                <img src="https://bukukita.com/babacms/displaybuku/56748_f.jpg" alt="Sampul buku Linux Untuk Pemula oleh Gatotkoco Suroso" loading="lazy" decoding="async" class="w-full h-72 object-cover">
                 <div class="p-4 relative z-20 flex flex-col flex-grow">
                     <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Novel</span>
-                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">Linux Untuk Pemula</h4>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight min-h-[4.25rem] line-clamp-3">Linux Untuk Pemula</h4>
                     <p class="text-gray-600 text-sm mt-1">Oleh GATOTKOCO SUROSO</p>
-                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
-                        <span class="text-lg font-bold text-gray-900">Rp 1.000.000</span>
-                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy </Details></button>
+                    <div class="mt-auto pt-4 border-t border-gray-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-2">
+                            <span class="text-lg font-bold text-gray-900">Rp 1.000.000</span>
+                            <a href="https://wa.me/1234567890?text=Halo%2C%20saya%20mau%20beli%20buku%20Linux%20Untuk%20Pemula%20oleh%20Gatotkoco%20Suroso%20(Rp%201.000.000).%20Apakah%20masih%20tersedia%3F" target="_blank" rel="noopener" class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 text-center">Beli</a>
+                        </div>
+                        <details class="mt-3 text-sm">
+                            <summary class="cursor-pointer font-semibold text-blue-600 hover:text-blue-700">Detail buku</summary>
+                            <p class="text-gray-600 mt-1">Oleh GATOTKOCO SUROSO • Kategori: Novel. Edisi spesial dengan sudut pandang berbeda — cocok untuk koleksi maupun bacaan serius.</p>
+                        </details>
                     </div>
                 </div>
             </div>
-            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
-                <img src="https://perpustakaan.jakarta.go.id/catalog-dispusip/uploaded_files/sampul_koleksi/original/Monograf/211116.jpg" alt="Buku 3" class="w-full h-48 object-cover">
+            <div id="buku-7" data-kategori="favorit" class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full scroll-mt-24">
+                <img src="https://perpustakaan.jakarta.go.id/catalog-dispusip/uploaded_files/sampul_koleksi/original/Monograf/211116.jpg" alt="Sampul buku Ahmad Sahroni meraih mimpi oleh Fenty Effendy" loading="lazy" decoding="async" class="w-full h-72 object-cover">
                 <div class="p-4 relative z-20 flex flex-col flex-grow">
                     <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Favorit</span>
-                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">Ahmad Sahroni meraih mimpi</h4>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight min-h-[4.25rem] line-clamp-3">Ahmad Sahroni meraih mimpi</h4>
                     <p class="text-gray-600 text-sm mt-1">Oleh FENTY EFFENDY</p>
-                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
-                        <span class="text-lg font-bold text-gray-900">Rp 1.000.000</span>
-                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy </Details></button>
+                    <div class="mt-auto pt-4 border-t border-gray-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-2">
+                            <span class="text-lg font-bold text-gray-900">Rp 1.000.000</span>
+                            <a href="https://wa.me/1234567890?text=Halo%2C%20saya%20mau%20beli%20buku%20Ahmad%20Sahroni%20meraih%20mimpi%20(Rp%201.000.000).%20Apakah%20masih%20tersedia%3F" target="_blank" rel="noopener" class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 text-center">Beli</a>
+                        </div>
+                        <details class="mt-3 text-sm">
+                            <summary class="cursor-pointer font-semibold text-blue-600 hover:text-blue-700">Detail buku</summary>
+                            <p class="text-gray-600 mt-1">Oleh FENTY EFFENDY • Kategori: Favorit. Kisah inspiratif meraih mimpi dari nol hingga sukses. Penuh motivasi dan pelajaran hidup.</p>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full">
-                <img src="https://imgs.search.brave.com/9-7CniKEPELqr9JledmwQYkltEitOGJAuz9kgfvQ9Yg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NDFxaGFoVFp5WEwu/anBn" alt="Buku 4" class="w-full h-48 object-cover">
+            <div id="buku-8" data-kategori="novel" class="book-card-shimer book-item bg-white shadow-sm border border-gray-200 flex flex-col h-full scroll-mt-24">
+                <img src="https://imgs.search.brave.com/9-7CniKEPELqr9JledmwQYkltEitOGJAuz9kgfvQ9Yg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NDFxaGFoVFp5WEwu/anBn" alt="Sampul buku The Purr A Novel oleh Just Purr" loading="lazy" decoding="async" class="w-full h-72 object-cover">
                 <div class="p-4 relative z-20 flex flex-col flex-grow">
                     <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Novel</span>
-                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight">The Purr A Novel</h4>
+                    <h4 class="text-lg font-bold mt-1 text-gray-900 leading-tight min-h-[4.25rem] line-clamp-3">The Purr A Novel</h4>
                     <p class="text-gray-600 text-sm mt-1">Oleh JUST PURR</p>
-                    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 border-t border-gray-200 mt-4">
-                        <span class="text-lg font-bold text-gray-900">Rp 50.000</span>
-                        <button class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 transition text-center"><Details>Cihuy </Details></button>
+                    <div class="mt-auto pt-4 border-t border-gray-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-2">
+                            <span class="text-lg font-bold text-gray-900">Rp 50.000</span>
+                            <a href="https://wa.me/1234567890?text=Halo%2C%20saya%20mau%20beli%20buku%20The%20Purr%20A%20Novel%20(Rp%2050.000).%20Apakah%20masih%20tersedia%3F" target="_blank" rel="noopener" class="bg-blue-500 text-white w-full sm:w-auto px-3 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200 text-center">Beli</a>
+                        </div>
+                        <details class="mt-3 text-sm">
+                            <summary class="cursor-pointer font-semibold text-blue-600 hover:text-blue-700">Detail buku</summary>
+                            <p class="text-gray-600 mt-1">Oleh JUST PURR • Kategori: Novel. Lanjutan kisah hangat bernuansa kucing — ringan, lucu, dan cocok untuk semua umur.</p>
+                        </details>
                     </div>
                 </div>
             </div>
         </div>
-          
+    </main>
+</body>
 </html>
